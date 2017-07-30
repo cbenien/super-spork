@@ -1,16 +1,23 @@
 package com.superspork.web;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@RestController
+@Controller
 public class HelloController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     static int counter = 0;
 
-    @RequestMapping("/")
-    public String index() {
+    @GetMapping("/")
+    public String index(Model model) {
         counter ++;
-        return "Greetings from Spring Boot! You are visitor number " + counter;
+        logger.info("Main action invoked, current counter is {}", counter);
+        model.addAttribute("name", "Harry Potter");
+        model.addAttribute("counter", counter);
+        return "home";
     }
 
 }
