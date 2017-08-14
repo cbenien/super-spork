@@ -1,0 +1,11 @@
+version: "2"
+services:
+  web:
+    image: "superspork/web:latest"
+    ports:
+     - "9000:8080"
+     - "9001:8081"
+  api:
+    image: "superspork/api:latest"
+    ports:
+     - "9002:8080"
