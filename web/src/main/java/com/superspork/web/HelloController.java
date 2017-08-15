@@ -4,10 +4,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,6 +71,32 @@ public class HelloController {
         model.addAttribute("value", items);
 
         return "callapi";
+    }
+
+    @GetMapping("/addUser")
+    public String mainForm(Model model)
+    {
+        model.addAttribute("user", new UserData());
+        return "addUser";
+    }
+
+    @PostMapping("/form")
+    public String mainFormSubmit(@ModelAttribute UserData user)
+    {
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users")
+    public String users(Model model)
+    {
+        List<UserData> users = new ArrayList<>();
+
+        users.add(new UserData("user1", "user1@bla.com", "first user"));
+        users.add(new UserData("user2", "user2@blub.com", "second user"));
+        users.add(new UserData("user3", "user3@google.com", "third user"));
+
+        model.addAttribute("users", users);
+        return "users";
     }
 
     private static int IncrementByName(String name)

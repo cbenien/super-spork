@@ -1,11 +1,33 @@
 version: "2"
+
 services:
   web:
-    image: "superspork/web:latest"
+    image: superspork/web:latest
     ports:
-     - "9000:8080"
-     - "9001:8081"
+     - 9000:8080
+     - 9001:8081
   api:
-    image: "superspork/api:latest"
+    image: superspork/api:latest
     ports:
-     - "9002:8080"
+     - 9002:8080
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.1
+    environment:
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.graph.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+volumes:
+  esdata:
+    driver: local

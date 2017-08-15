@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Super-Spork form submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Form</h1>
+<form action="#" th:action="@{/form}" th:object="${user}" method="post">
+    <p>User name: <input type="text" th:field="*{userName}" /></p>
+    <p>Email: <input type="text" th:field="*{email}" /></p>
+    <p>Full name: <input type="text" th:field="*{fullName}" /></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>
