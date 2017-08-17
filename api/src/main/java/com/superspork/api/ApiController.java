@@ -21,10 +21,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ApiController {
@@ -36,7 +34,7 @@ public class ApiController {
     public ApiController()
     {
         elasticSearchRestClient = RestClient
-                .builder(new HttpHost("localhost", 9200, "http"))
+                .builder(new HttpHost("elasticsearch", 9200, "http"))
                 .build();
 
         mapper = new ObjectMapper();
@@ -58,10 +56,42 @@ public class ApiController {
         }
     }
 
-    @GetMapping("/")
-    public @ResponseBody List<String> index() {
-        logger.info("index was called...");
-        return Arrays.asList("a", "b", "c");
+    @GetMapping("/users")
+    public @ResponseBody List<User> users()
+        throws IOException
+    {
+        logger.info("users was called...");
+
+        Response getResponse = elasticSearchRestClient.performRequest(
+                "GET",
+                "/users/user/_search");
+
+        int statusCode = getResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
+        {
+            logger.info("Got unexpected response from ElasticSearch: {}", getResponse);
+            throw new IOException("Unexpected response from ElasticSearch: " + getResponse);
+        }
+
+        logger.info("Got response from ElasticSearch: {}", getResponse);
+        String esUserJson = streamToString(getResponse.getEntity().getContent());
+        logger.info(esUserJson);
+
+        EsSearchResult esSearchResult = mapper
+                .readerFor(EsSearchResult.class)
+                .readValue(esUserJson);
+
+        if (esSearchResult.getHits().getTotal() == 0)
+        {
+            return new ArrayList<>();
+        }
+
+        return Arrays.stream(esSearchResult.getHits().getHits())
+                .map(x -> new User(
+                        x.get_source().getUserName(),
+                        x.get_source().getEmail(),
+                        x.get_source().getFullName()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/users/{userId}")
@@ -72,8 +102,7 @@ public class ApiController {
 
         Response getResponse = elasticSearchRestClient.performRequest(
                 "GET",
-                "/users/user/" + userId,
-                new BasicHeader("bla", "blub"));
+                "/users/user/" + userId);
 
         logger.info("Got response from ElasticSearch: {}", getResponse);
         String esUserJson = streamToString(getResponse.getEntity().getContent());

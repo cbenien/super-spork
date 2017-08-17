@@ -10,7 +10,6 @@
             <tr>
                 <th>User name</th>
                 <th>Email</th>
-                <th>Full name</th>
             </tr>
         </thead>
         <tbody>
@@ -18,7 +17,6 @@
             <tr th:each="user : ${users}">
                 <td th:text="${user.userName}">MyUserName</td>
                 <td th:text="${user.email}">MyEmail</td>
-                <td th:text="${user.fullName}">MyFullName</td>
             </tr>
 
         </tbody>
