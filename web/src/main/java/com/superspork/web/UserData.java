@@ -17,7 +17,8 @@ public class UserData
     public UserData() {
     }
 
-    public UserData(String userName, String email, String fullName) {
+    public UserData(String userId, String userName, String email, String fullName) {
+        this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.fullName = fullName;
@@ -30,6 +31,14 @@ public class UserData
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
         return result;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -56,6 +65,8 @@ public class UserData
         this.fullName = fullName;
     }
 
+
+    private String userId;
     private String userName;
     private String email;
     private String fullName;

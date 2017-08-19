@@ -57,7 +57,7 @@ public class ApiController {
     }
 
     @GetMapping("/users")
-    public @ResponseBody List<User> users()
+    public @ResponseBody List<UserListItem> users()
         throws IOException
     {
         logger.info("users was called...");
@@ -87,10 +87,11 @@ public class ApiController {
         }
 
         return Arrays.stream(esSearchResult.getHits().getHits())
-                .map(x -> new User(
+                .map(x -> new UserListItem(
+                        x.get_id(),
                         x.get_source().getUserName(),
-                        x.get_source().getEmail(),
-                        x.get_source().getFullName()))
+                        x.get_source().getEmail()
+                        ))
                 .collect(Collectors.toList());
     }
 

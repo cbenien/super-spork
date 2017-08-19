@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
@@ -52,11 +53,25 @@ public class UsersController {
 
         List<UserData> users = Arrays
                 .stream(data)
-                .map(x -> (UserData)x)
                 .collect(Collectors.toList());
 
         model.addAttribute("users", users);
         return "users";
+    }
+
+    @GetMapping("/users/{userId}")
+    public String userDetail(@PathVariable String userId, Model model)
+    {
+        logger.info("/users/{} called", userId);
+
+        UserData user = userApi.getForObject(
+                URI.create("http://api:8080/users/" + userId),
+                UserData.class);
+
+        user.setUserId(userId);
+
+        model.addAttribute("user", user);
+        return "userDetail";
     }
 }
 
