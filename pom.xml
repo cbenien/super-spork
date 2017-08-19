@@ -10,6 +10,13 @@
     <version>1.0</version>
     <name>Superspork Parent Project</name>
 
+	<properties>
+		<!-- skip deployment to a maven repo, only use deploy phase to deploy
+		     to container registry -->
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
+
     <modules>
         <module>api</module>
         <module>web</module>
