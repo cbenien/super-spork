@@ -26,7 +26,7 @@ spec:
         app: superspork-api
     spec:
       containers:
-      - image: chrisb.azurecr.io/superspork/api:latest
+      - image: chrisb.azurecr.io/superspork/api:0.0.2
         name: superspork-api
         ports:
         - containerPort: 8080

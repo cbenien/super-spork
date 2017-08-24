@@ -5,11 +5,11 @@
 
 	<groupId>com.super-spork</groupId>
 	<artifactId>web</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>web</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Superspork Web</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -60,6 +60,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>superspork-web</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -90,7 +91,7 @@
 				<configuration>
 					<repository>chrisb.azurecr.io/${docker.image.prefix}/${project.artifactId}</repository>
 					<tag>${project.version}</tag>
-					<tag>latest</tag>
+					<!-- <tag>latest</tag> -->
 				</configuration>
 			</plugin>
 		</plugins>
