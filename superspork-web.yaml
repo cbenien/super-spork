@@ -26,9 +26,21 @@ spec:
         app: superspork-web
     spec:
       containers:
-      - image: chrisb.azurecr.io/superspork/web:0.0.2
+      - image: chrisb.azurecr.io/superspork/web:0.0.3
         name: superspork-web
         ports:
         - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
       imagePullSecrets:
       - name: regsecret
