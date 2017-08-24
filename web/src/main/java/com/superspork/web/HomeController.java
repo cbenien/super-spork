@@ -13,6 +13,7 @@ public class HomeController {
     @GetMapping("/")
     public String addUser(Model model)
     {
+        model.addAttribute("version", Version.CURRENT_VERSION);
         return "home";
     }
 }
