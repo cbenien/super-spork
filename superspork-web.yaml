@@ -8,6 +8,12 @@ spec:
       protocol: TCP
       targetPort: 8080
       nodePort: 32000
+      name: web-public
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+      nodePort: 32001
+      name: web-management
   selector:
     app: superspork-web
   type: NodePort
@@ -30,17 +36,20 @@ spec:
         name: superspork-web
         ports:
         - containerPort: 8080
+          name: public-web
+        - containerPort: 8081
+          name: management
         readinessProbe:
           httpGet:
-            path: /
-            port: 8080
-          initialDelaySeconds: 3
+            path: /manage/health
+            port: 8081
+          initialDelaySeconds: 10
           periodSeconds: 3
         livenessProbe:
           httpGet:
-            path: /
-            port: 8080
-          initialDelaySeconds: 3
+            path: /manage/health
+            port: 8081
+          initialDelaySeconds: 10
           periodSeconds: 3
       imagePullSecrets:
       - name: regsecret

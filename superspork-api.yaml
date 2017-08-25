@@ -7,7 +7,13 @@ spec:
     - port: 8080
       protocol: TCP
       targetPort: 8080
-      nodePort: 32001
+      nodePort: 32010
+      name: api-public
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+      nodePort: 32011
+      name: api-management
   selector:
     app: superspork-api
   type: NodePort
@@ -30,5 +36,8 @@ spec:
         name: superspork-api
         ports:
         - containerPort: 8080
+          name: api
+        - containerPort: 8081
+          name: management
       imagePullSecrets:
       - name: regsecret

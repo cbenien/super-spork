@@ -7,7 +7,7 @@ spec:
     - port: 9200
       protocol: TCP
       targetPort: 9200
-      nodePort: 32010
+      nodePort: 32020
   selector:
     app: superspork-elasticsearch
   type: NodePort
@@ -40,5 +40,12 @@ spec:
           value: "-Xms512m -Xmx512m"
         ports:
         - containerPort: 9200
+        volumeMounts:
+        - mountPath: /usr/share/elasticsearch/data
+          name: elasticsearch-data
       imagePullSecrets:
       - name: regsecret
+      volumes:
+      - name: elasticsearch-data
+        persistentVolumeClaim:
+          claimName: pvc-elasticsearch-nfs
